@@ -9,6 +9,10 @@ package ch.fhnw.dist.spamfilter.util;
 public class MailReader {
 
     // 1) read mail files
+    
+
+
+
     // 2) analyse mail
     // 3) add to statistics
 
