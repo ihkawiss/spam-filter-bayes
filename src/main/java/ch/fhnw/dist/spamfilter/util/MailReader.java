@@ -38,7 +38,7 @@ public class MailReader {
         List<Mail> spamAnlernMails = readMailsFromZip(spamAnlernFile, true);
         mails.addAll(spamAnlernMails);
 
-
+        MailAnalyser.getInstance().analyse(mails);
     }
 
     private List<Mail> readMailsFromZip(ZipFile zipFile, boolean isSpam) {
