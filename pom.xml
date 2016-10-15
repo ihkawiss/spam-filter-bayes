@@ -8,10 +8,12 @@
     <artifactId>spamfilter</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <dependency>
-        <groupId>net.lingala.zip4j</groupId>
-        <artifactId>zip4j</artifactId>
-        <version>1.3.2</version>
-    </dependency>
+    <dependencies>
+        <dependency>
+            <groupId>net.lingala.zip4j</groupId>
+            <artifactId>zip4j</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+    </dependencies>
 
 </project>
