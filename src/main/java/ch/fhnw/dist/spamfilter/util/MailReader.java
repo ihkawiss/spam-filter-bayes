@@ -39,6 +39,9 @@ public class MailReader {
         mails.addAll(spamAnlernMails);
 
         MailAnalyser.getInstance().analyse(mails);
+
+        // delete temp dir for clean environment
+        FileUtils.deleteTempDir();
     }
 
     private List<Mail> readMailsFromZip(ZipFile zipFile, boolean isSpam) {

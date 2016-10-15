@@ -13,7 +13,7 @@ import java.nio.file.Paths;
  * @author Hoang Tran <hoang.tran@students.fhnw.ch>
  */
 public class FileUtils {
-    public static final String TEMP_PATH = "C:/spam-filter-bayer-temp";
+    public static final String TEMP_PATH = System.getProperty("java.io.tmpdir") + "/spam-filter-bayes-tmp";
 
     private FileUtils() {
         // utility classes do not have public constructor
