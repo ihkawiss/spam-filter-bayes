@@ -1,5 +1,7 @@
 package ch.fhnw.dist.spamfilter;
 
+import ch.fhnw.dist.spamfilter.util.MailReader;
+
 /**
  * Created 15.10.2016
  *
@@ -8,8 +10,9 @@ package ch.fhnw.dist.spamfilter;
  */
 public class Main {
 
-    public static void main(String[] args){
-
+    public static void main(String[] args) {
+        MailReader mailReader = new MailReader();
+        mailReader.readMails();
     }
 
 }
