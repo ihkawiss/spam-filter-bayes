@@ -1,5 +1,7 @@
 package ch.fhnw.dist.spamfilter.util;
 
+import ch.fhnw.dist.spamfilter.model.Mail;
+
 import java.util.HashMap;
 
 /**
@@ -20,23 +22,29 @@ public class MailStatistic {
         return MailStatisticHolder.INSTANCE;
     }
 
-    private HashMap<String, Integer> hamWords;
-    private HashMap<String, Integer> spamWords;
+    private HashMap<String, Float[]> wordMap;
 
-    public HashMap<String, Integer> getHamWords() {
-        return hamWords;
+    // ------------------------ TESTING REMOVE ME ------------------------
+
+    private Mail testMail;
+
+    public Mail getTestMail() {
+        return testMail;
     }
 
-    public void setHamWords(HashMap<String, Integer> hamWords) {
-        this.hamWords = hamWords;
+    public void setTestMail(Mail testMail) {
+        this.testMail = testMail;
     }
 
-    public HashMap<String, Integer> getSpamWords() {
-        return spamWords;
+    // ------------------------      TEST END     ------------------------
+
+
+    public HashMap<String, Float[]> getWordMap() {
+        return wordMap;
     }
 
-    public void setSpamWords(HashMap<String, Integer> spamWords) {
-        this.spamWords = spamWords;
+    public void setWordMap(HashMap<String, Float[]> wordMap) {
+        this.wordMap = wordMap;
     }
 
 }

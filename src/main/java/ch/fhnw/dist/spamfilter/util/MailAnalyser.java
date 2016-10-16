@@ -1,9 +1,7 @@
 package ch.fhnw.dist.spamfilter.util;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 import ch.fhnw.dist.spamfilter.model.Mail;
 
@@ -15,7 +13,9 @@ import ch.fhnw.dist.spamfilter.model.Mail;
  */
 public class MailAnalyser {
 
-    private final String SPLITTER = " ";
+    public static final String SEPERATOR = "[\\s\\n]";
+    private final int SPAM_COUNT_INDEX = 0;
+    private final int HAM_COUNT_INDEX = 1;
 
     private MailAnalyser(){}
 
@@ -39,21 +39,33 @@ public class MailAnalyser {
 
         MailStatistic statistic = MailStatistic.getInstance();
 
+        // @FIXME: remove this piece of shit
+        statistic.setTestMail(mails.get(12));
+
         // word count holder
-        HashMap<String, Integer> spamWords = new HashMap<String, Integer>();
-        HashMap<String, Integer> hamWords = new HashMap<String, Integer>();
+        HashMap<String, Float[]> words = new HashMap<>();
 
         // iterate through all spam mails and count words
         mails.stream().filter(m -> m.isSpam()).forEach(m -> {
-            countWordsToList(spamWords, m);
-            statistic.setSpamWords(spamWords);
+            countWordsToList(words, m);
+            statistic.setWordMap(words);
         });
 
         // iterate through all spam mails and count words
         mails.stream().filter(m -> !m.isSpam()).forEach(m -> {
-            countWordsToList(hamWords, m);
-            statistic.setHamWords(hamWords);
+            countWordsToList(words, m);
+            statistic.setWordMap(words);
         });
+
+
+        // DEBUG, @FIXME: remove if no longer needed
+        /*for(HashMap.Entry<String, Float[]> entry : statistic.getWordMap().entrySet()) {
+            String key = entry.getKey();
+            Float[] value = entry.getValue();
+
+            if(value[0] > 10f && value[1] < 10f)
+                System.out.println(key + ": {" + value[0] + " , " + value[1] + "}");
+        }*/
 
     }
 
@@ -63,9 +75,28 @@ public class MailAnalyser {
      * @param words HashMap to store word count
      * @param m Mail reference to count on
      */
-    public void countWordsToList(HashMap<String, Integer> words, Mail m){
-        for(String word : m.getContent().split(SPLITTER)){
-            words.put(word, words.get(word) == null ? 1 : words.get(word) + 1);
+    public void countWordsToList(HashMap<String, Float[]> words, Mail m){
+        for(String word : m.getContent().split(SEPERATOR)){
+
+            if(words.containsKey(word)){
+                Float[] counts = words.get(word);
+
+                if(m.isSpam())
+                    counts[SPAM_COUNT_INDEX]++;
+                else
+                    counts[HAM_COUNT_INDEX]++;
+
+            } else {
+                Float[] counts;
+
+                if(m.isSpam())
+                    counts = new Float[]{1f, 0.001f};
+                else
+                    counts = new Float[]{0.001f, 1f};
+
+                words.put(word, counts);
+            }
+
         }
     }
 
