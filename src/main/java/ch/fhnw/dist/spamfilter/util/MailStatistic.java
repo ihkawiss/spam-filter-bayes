@@ -3,6 +3,7 @@ package ch.fhnw.dist.spamfilter.util;
 import ch.fhnw.dist.spamfilter.model.Mail;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created 15.10.2016
@@ -24,16 +25,43 @@ public class MailStatistic {
 
     private HashMap<String, Float[]> wordMap;
 
-    // ------------------------ TESTING REMOVE ME ------------------------
+    private int spamMailsProcessed;
+    private int hamMailsProcessed;
 
-    private Mail testMail;
-
-    public Mail getTestMail() {
-        return testMail;
+    public Integer getSpamMailsProcessed() {
+        return spamMailsProcessed;
     }
 
-    public void setTestMail(Mail testMail) {
-        this.testMail = testMail;
+    public void setSpamMailsProcessed(Integer spamMailsProcessed) {
+        this.spamMailsProcessed = spamMailsProcessed;
+    }
+
+    public Integer getHamMailsProcessed() {
+        return hamMailsProcessed;
+    }
+
+    public void setHamMailsProcessed(Integer hamMailsProcessed) {
+        this.hamMailsProcessed = hamMailsProcessed;
+    }
+
+    public void incrementSpamMailsProcessed(){
+        this.spamMailsProcessed++;
+    }
+
+    public void incrementHamMailsProcessed(){
+        this.hamMailsProcessed++;
+    }
+
+    // ------------------------ TESTING REMOVE ME ------------------------
+
+    private List<Mail> testMails;
+
+    public List<Mail> getTestMail() {
+        return testMails;
+    }
+
+    public void setTestMail(List<Mail> testMail) {
+        this.testMails = testMail;
     }
 
     // ------------------------      TEST END     ------------------------

@@ -1,6 +1,7 @@
 package ch.fhnw.dist.spamfilter;
 
 import ch.fhnw.dist.spamfiler.filter.MailFilter;
+import ch.fhnw.dist.spamfilter.model.Mail;
 import ch.fhnw.dist.spamfilter.util.MailReader;
 import ch.fhnw.dist.spamfilter.util.MailStatistic;
 
@@ -16,7 +17,8 @@ public class Main {
         MailReader mailReader = new MailReader();
         mailReader.readMails();
 
-        MailFilter.getInstance().filter(MailStatistic.getInstance().getTestMail());
+        for(Mail m : MailStatistic.getInstance().getTestMail())
+            MailFilter.getInstance().filter(m);
     }
 
 }

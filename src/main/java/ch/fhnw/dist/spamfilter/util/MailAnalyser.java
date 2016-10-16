@@ -14,8 +14,8 @@ import ch.fhnw.dist.spamfilter.model.Mail;
 public class MailAnalyser {
 
     public static final String SEPERATOR = "[\\s\\n]";
-    private final int SPAM_COUNT_INDEX = 0;
-    private final int HAM_COUNT_INDEX = 1;
+    public static final int SPAM_COUNT_INDEX = 0;
+    public static int HAM_COUNT_INDEX = 1;
 
     private MailAnalyser(){}
 
@@ -40,7 +40,7 @@ public class MailAnalyser {
         MailStatistic statistic = MailStatistic.getInstance();
 
         // @FIXME: remove this piece of shit
-        statistic.setTestMail(mails.get(12));
+        statistic.setTestMail(mails);
 
         // word count holder
         HashMap<String, Float[]> words = new HashMap<>();
@@ -49,23 +49,17 @@ public class MailAnalyser {
         mails.stream().filter(m -> m.isSpam()).forEach(m -> {
             countWordsToList(words, m);
             statistic.setWordMap(words);
+            statistic.incrementSpamMailsProcessed();
         });
 
         // iterate through all spam mails and count words
         mails.stream().filter(m -> !m.isSpam()).forEach(m -> {
-            countWordsToList(words, m);
-            statistic.setWordMap(words);
+            if(statistic.getHamMailsProcessed() < 249){ // try to analyse same amount of spam and ham
+                countWordsToList(words, m);
+                statistic.setWordMap(words);
+                statistic.incrementHamMailsProcessed();
+            }
         });
-
-
-        // DEBUG, @FIXME: remove if no longer needed
-        /*for(HashMap.Entry<String, Float[]> entry : statistic.getWordMap().entrySet()) {
-            String key = entry.getKey();
-            Float[] value = entry.getValue();
-
-            if(value[0] > 10f && value[1] < 10f)
-                System.out.println(key + ": {" + value[0] + " , " + value[1] + "}");
-        }*/
 
     }
 
