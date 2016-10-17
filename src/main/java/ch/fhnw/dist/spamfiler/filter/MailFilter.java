@@ -79,13 +79,13 @@ public class MailFilter {
         for(String word : words){
 
             // check if word was already rated
-            if(statistic.getWordMap().containsKey(word)){
+            if(statistic.getWordMap().containsKey(word) && !word.equals("")){
                 Float[] counts = statistic.getWordMap().get(word);
 
                 // sum of spam & ham eq significantly value
                 float sum = counts[0];
 
-                if(mostSignificantWords.size() < 10) {
+                if(mostSignificantWords.size() < 100) {
                     mostSignificantWords.put(word, sum);
                 }
                 else{
