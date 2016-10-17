@@ -49,7 +49,7 @@ public class MailReader {
         try {
             zipFile.extractAll(tempDirPath);
             File tempDir = new File(tempDirPath);
-            return readMailsFromDirectory(tempDir, false);
+            return readMailsFromDirectory(tempDir, isSpam);
         } catch (ZipException e) {
             System.err.println("Could not extract zip: " + tempDirPath);
         }

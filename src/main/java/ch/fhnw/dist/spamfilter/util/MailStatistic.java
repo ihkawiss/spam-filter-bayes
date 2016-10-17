@@ -1,6 +1,9 @@
 package ch.fhnw.dist.spamfilter.util;
 
+import ch.fhnw.dist.spamfilter.model.Mail;
+
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created 15.10.2016
@@ -20,23 +23,56 @@ public class MailStatistic {
         return MailStatisticHolder.INSTANCE;
     }
 
-    private HashMap<String, Integer> hamWords;
-    private HashMap<String, Integer> spamWords;
+    private HashMap<String, Float[]> wordMap;
 
-    public HashMap<String, Integer> getHamWords() {
-        return hamWords;
+    private int spamMailsProcessed;
+    private int hamMailsProcessed;
+
+    public Integer getSpamMailsProcessed() {
+        return spamMailsProcessed;
     }
 
-    public void setHamWords(HashMap<String, Integer> hamWords) {
-        this.hamWords = hamWords;
+    public void setSpamMailsProcessed(Integer spamMailsProcessed) {
+        this.spamMailsProcessed = spamMailsProcessed;
     }
 
-    public HashMap<String, Integer> getSpamWords() {
-        return spamWords;
+    public Integer getHamMailsProcessed() {
+        return hamMailsProcessed;
     }
 
-    public void setSpamWords(HashMap<String, Integer> spamWords) {
-        this.spamWords = spamWords;
+    public void setHamMailsProcessed(Integer hamMailsProcessed) {
+        this.hamMailsProcessed = hamMailsProcessed;
+    }
+
+    public void incrementSpamMailsProcessed(){
+        this.spamMailsProcessed++;
+    }
+
+    public void incrementHamMailsProcessed(){
+        this.hamMailsProcessed++;
+    }
+
+    // ------------------------ TESTING REMOVE ME ------------------------
+
+    private List<Mail> testMails;
+
+    public List<Mail> getTestMail() {
+        return testMails;
+    }
+
+    public void setTestMail(List<Mail> testMail) {
+        this.testMails = testMail;
+    }
+
+    // ------------------------      TEST END     ------------------------
+
+
+    public HashMap<String, Float[]> getWordMap() {
+        return wordMap;
+    }
+
+    public void setWordMap(HashMap<String, Float[]> wordMap) {
+        this.wordMap = wordMap;
     }
 
 }
