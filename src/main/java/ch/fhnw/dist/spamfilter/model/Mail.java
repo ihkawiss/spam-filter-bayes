@@ -1,5 +1,8 @@
 package ch.fhnw.dist.spamfilter.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Hoang
  */
@@ -7,6 +10,8 @@ public class Mail {
     private String fileName;
     private boolean isSpam;
     private String content;
+
+    public static List<Mail> testMails = new ArrayList<>();
 
     public Mail(String fileName, boolean isSpam, String content) {
         this.fileName = fileName;
