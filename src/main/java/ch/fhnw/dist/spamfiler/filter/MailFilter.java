@@ -1,12 +1,11 @@
 package ch.fhnw.dist.spamfiler.filter;
 
+import ch.fhnw.dist.spamfilter.Main;
 import ch.fhnw.dist.spamfilter.model.Mail;
 import ch.fhnw.dist.spamfilter.util.MailAnalyser;
-import ch.fhnw.dist.spamfilter.util.MailReader;
 import ch.fhnw.dist.spamfilter.util.MailStatistic;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 /**
@@ -54,9 +53,14 @@ public class MailFilter {
 
         }
 
-        double result = spamValue / (spamValue + hamValue);
+        // calculate spam probability
+        double result = (spamValue / (spamValue + hamValue)) * 100;
 
-        System.out.println("Spam Wahrscheinlichkeit beträgt " + result * 100 + "% ---> wirklich spam: " + m.isSpam());
+        System.out.println();
+        System.out.println(Main.tab + "Berechnete SPAM-Wahrscheinlichkeit beträgt: " + result + "%");
+        System.out.println();
+        System.out.println(Main.tab + "FOLGLICHES ERGEBNIS: " + Main.tab + (result < 50d ? "HAM" : "SPAM"));
+        System.out.println();
 
         return false;
     }
@@ -73,7 +77,7 @@ public class MailFilter {
         MailStatistic statistic = MailStatistic.getInstance();
 
         // get all words from mail
-        String[] words = m.getContent().split(MailAnalyser.SEPERATOR);
+        String[] words = m.getContent().split(MailAnalyser.SEPARATOR);
 
         // find 10 most significant based on statistics
         for(String word : words){
@@ -83,9 +87,10 @@ public class MailFilter {
                 Float[] counts = statistic.getWordMap().get(word);
 
                 // sum of spam & ham eq significantly value
-                float sum = counts[0];
+                float sum = counts[0] - counts[0];
+                sum = sum < 0 ? sum * -1 : sum;
 
-                if(mostSignificantWords.size() < 100) {
+                if(mostSignificantWords.size() < 10) {
                     mostSignificantWords.put(word, sum);
                 }
                 else{

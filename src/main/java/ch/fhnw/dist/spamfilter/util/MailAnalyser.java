@@ -13,11 +13,12 @@ import ch.fhnw.dist.spamfilter.model.Mail;
  */
 public class MailAnalyser {
 
-    public static final String SEPERATOR = "[\\s\\n]";
+    public static final String SEPARATOR = "[\\s\\n]";
     public static final int SPAM_COUNT_INDEX = 0;
-    public static int HAM_COUNT_INDEX = 1;
+    public static final int HAM_COUNT_INDEX = 1;
 
-    private MailAnalyser(){}
+    private MailAnalyser() {
+    }
 
     private static class MailAnalyserHolder {
         private static final MailAnalyser INSTANCE = new MailAnalyser();
@@ -29,18 +30,16 @@ public class MailAnalyser {
 
     /**
      * Analyse words within mail and store statistics
-     * @author Kevin Kirn <kevin.kirn@students.fhnw.ch>
+     *
      * @param mails List of mails to analyse
+     * @author Kevin Kirn <kevin.kirn@students.fhnw.ch>
      */
-    public void analyse(List<Mail> mails){
+    public void analyse(List<Mail> mails) {
 
-        if(mails == null || mails.size() < 1)
+        if (mails == null || mails.size() < 1)
             throw new IllegalArgumentException("Mail list can't be null or empty.");
 
         MailStatistic statistic = MailStatistic.getInstance();
-
-        // @FIXME: remove this piece of shit
-        statistic.setTestMail(mails);
 
         // word count holder
         HashMap<String, Float[]> words = new HashMap<>();
@@ -54,28 +53,27 @@ public class MailAnalyser {
 
         // iterate through all spam mails and count words
         mails.stream().filter(m -> !m.isSpam()).forEach(m -> {
-            if(statistic.getHamMailsProcessed() < 249){ // try to analyse same amount of spam and ham
-                countWordsToList(words, m);
-                statistic.setWordMap(words);
-                statistic.incrementHamMailsProcessed();
-            }
+            countWordsToList(words, m);
+            statistic.setWordMap(words);
+            statistic.incrementHamMailsProcessed();
         });
 
     }
 
     /**
      * Count words in Mail and store result into map
-     * @author Kevin Kirn <kevin.kirn@students.fhnw.ch>
+     *
      * @param words HashMap to store word count
-     * @param m Mail reference to count on
+     * @param m     Mail reference to count on
+     * @author Kevin Kirn <kevin.kirn@students.fhnw.ch>
      */
-    public void countWordsToList(HashMap<String, Float[]> words, Mail m){
-        for(String word : m.getContent().split(SEPERATOR)){
+    public void countWordsToList(HashMap<String, Float[]> words, Mail m) {
+        for (String word : m.getContent().split(SEPARATOR)) {
 
-            if(words.containsKey(word)){
+            if (words.containsKey(word)) {
                 Float[] counts = words.get(word);
 
-                if(m.isSpam())
+                if (m.isSpam())
                     counts[SPAM_COUNT_INDEX]++;
                 else
                     counts[HAM_COUNT_INDEX]++;
@@ -83,7 +81,7 @@ public class MailAnalyser {
             } else {
                 Float[] counts;
 
-                if(m.isSpam())
+                if (m.isSpam())
                     counts = new Float[]{1f, 0.001f};
                 else
                     counts = new Float[]{0.001f, 1f};

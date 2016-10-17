@@ -17,18 +17,20 @@ import java.util.List;
 public class MailReader {
     private static final String HAM_ANLERN_FILENAME = "ham-anlern.zip";
     private static final String SPAM_ANLERN_FILENAME = "spam-anlern.zip";
-    //private static final String TEMP_PATH = Paths.get(".").toAbsolutePath().normalize().toString() + "/spam-filter-bayer-temp";
+    private static final String HAM_TEST_FILENAME = "spam-test.zip";
+    private static final String SPAM_TEST_FILENAME = "ham-test.zip";
 
     public void readMails() {
         // delete temp dir for clean environment
         FileUtils.deleteTempDir();
 
-        List<Mail> mails = new ArrayList<>();
+        List<Mail> learnMails = new ArrayList<>();
+        List<Mail> testMails = new ArrayList<>();
 
         // ham anlern mails
         ZipFile hamAnlernFile = FileUtils.getZipFileFromResources(HAM_ANLERN_FILENAME);
         List<Mail> hamAnlernMails = readMailsFromZip(hamAnlernFile, false);
-        mails.addAll(hamAnlernMails);
+        learnMails.addAll(hamAnlernMails);
 
         // delete temp dir to prevent realoding ham mails
         FileUtils.deleteTempDir();
@@ -36,9 +38,21 @@ public class MailReader {
         // spam anlern mails
         ZipFile spamAnlernFile = FileUtils.getZipFileFromResources(SPAM_ANLERN_FILENAME);
         List<Mail> spamAnlernMails = readMailsFromZip(spamAnlernFile, true);
-        mails.addAll(spamAnlernMails);
+        learnMails.addAll(spamAnlernMails);
 
-        MailAnalyser.getInstance().analyse(mails);
+        // ham test
+        ZipFile hamTestFile = FileUtils.getZipFileFromResources(HAM_TEST_FILENAME);
+        testMails.addAll(readMailsFromZip(hamTestFile, false));
+
+        // spam test
+        ZipFile spamTestFile = FileUtils.getZipFileFromResources(SPAM_TEST_FILENAME);
+        testMails.addAll(readMailsFromZip(spamTestFile, true));
+
+        // start learning process for learn mails
+        MailAnalyser.getInstance().analyse(learnMails);
+
+        // save all test mails
+        Mail.testMails.addAll(testMails);
 
         // delete temp dir for clean environment
         FileUtils.deleteTempDir();
