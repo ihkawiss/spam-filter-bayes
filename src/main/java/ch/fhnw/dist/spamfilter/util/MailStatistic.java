@@ -23,7 +23,7 @@ public class MailStatistic {
         return MailStatisticHolder.INSTANCE;
     }
 
-    private HashMap<String, Float[]> wordMap;
+    private HashMap<String, Float[]> wordMap = new HashMap<>();
 
     private int spamMailsProcessed;
     private int hamMailsProcessed;

@@ -31,7 +31,7 @@ public class MailFilter {
      * @param m Mail to filter
      * @return true if is probably spam
      */
-    public boolean filter(Mail m){
+    public double filter(Mail m){
 
         MailStatistic statistic = MailStatistic.getInstance();
 
@@ -54,15 +54,21 @@ public class MailFilter {
         }
 
         // calculate spam probability
-        double result = (spamValue / (spamValue + hamValue)) * 100;
+        return (spamValue / (spamValue + hamValue)) * 100;
 
-        System.out.println();
+        /*System.out.println();
         System.out.println(Main.tab + "Berechnete SPAM-Wahrscheinlichkeit beträgt: " + result + "%");
         System.out.println();
-        System.out.println(Main.tab + "FOLGLICHES ERGEBNIS: " + Main.tab + (result < 50d ? "HAM" : "SPAM"));
+        System.out.println(Main.tab + "FOLGLICHES ERGEBNIS: " + Main.tab + (result < 52d ? "HAM" : "SPAM"));
         System.out.println();
 
-        return false;
+        System.out.println(Main.line);
+        System.out.println();
+        System.out.println("Ordnen Sie dieses Mail gleich ein?");
+        System.out.println(Main.tab + Main.tab + "(1) JA " + Main.tab + Main.tab + "(2) NEIN");
+        System.out.println();*/
+
+        //return false;
     }
 
     /**
