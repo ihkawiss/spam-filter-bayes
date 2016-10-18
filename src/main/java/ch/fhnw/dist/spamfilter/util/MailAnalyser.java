@@ -3,6 +3,7 @@ package ch.fhnw.dist.spamfilter.util;
 import java.util.HashMap;
 import java.util.List;
 
+import ch.fhnw.dist.spamfiler.filter.MailFilter;
 import ch.fhnw.dist.spamfilter.model.Mail;
 
 /**
@@ -42,7 +43,7 @@ public class MailAnalyser {
         MailStatistic statistic = MailStatistic.getInstance();
 
         // word count holder
-        HashMap<String, Float[]> words = new HashMap<>();
+        HashMap<String, Float[]> words = statistic.getWordMap();
 
         // iterate through all spam mails and count words
         mails.stream().filter(m -> m.isSpam()).forEach(m -> {
@@ -59,6 +60,31 @@ public class MailAnalyser {
         });
 
     }
+
+    public double calculateProbabilitiesOfList(List<Mail> mails){
+
+        double sum = 0;
+
+        for(Mail m : mails)
+            sum += MailFilter.getInstance().filter(m);
+
+        return sum / mails.size();
+    }
+
+    public double calculateSuccessRate(List<Mail> mails){
+
+        int fails = 0;
+
+        for(Mail m: mails){
+            double propability = MailFilter.getInstance().filter(m);
+
+            if(propability > 52d && !m.isSpam())
+                fails++; // mail is no spam
+        }
+
+        return (mails.size() - fails) / (mails.size() / 100);
+    }
+
 
     /**
      * Count words in Mail and store result into map
