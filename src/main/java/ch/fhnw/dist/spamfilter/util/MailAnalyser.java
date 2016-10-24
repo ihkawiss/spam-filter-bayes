@@ -1,10 +1,10 @@
 package ch.fhnw.dist.spamfilter.util;
 
-import java.util.HashMap;
-import java.util.List;
-
 import ch.fhnw.dist.spamfiler.filter.MailFilter;
 import ch.fhnw.dist.spamfilter.model.Mail;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created 15.10.2016
@@ -17,6 +17,7 @@ public class MailAnalyser {
     public static final String SEPARATOR = "[\\s\\n]";
     public static final int SPAM_COUNT_INDEX = 0;
     public static final int HAM_COUNT_INDEX = 1;
+    public static final double SCHWELLENWERT = 59d;
 
     private MailAnalyser() {
     }
@@ -52,7 +53,7 @@ public class MailAnalyser {
             statistic.incrementSpamMailsProcessed();
         });
 
-        // iterate through all spam mails and count words
+        // iterate through all ham mails and count words
         mails.stream().filter(m -> !m.isSpam()).forEach(m -> {
             countWordsToList(words, m);
             statistic.setWordMap(words);
@@ -78,7 +79,7 @@ public class MailAnalyser {
         for(Mail m: mails){
             double propability = MailFilter.getInstance().filter(m);
 
-            if(propability > 52d && !m.isSpam())
+            if(propability > SCHWELLENWERT && !m.isSpam())
                 fails++; // mail is no spam
         }
 

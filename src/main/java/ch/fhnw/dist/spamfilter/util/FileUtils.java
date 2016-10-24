@@ -13,10 +13,23 @@ import java.nio.file.Paths;
  * @author Hoang Tran <hoang.tran@students.fhnw.ch>
  */
 public class FileUtils {
-    public static final String TEMP_PATH = System.getProperty("java.io.tmpdir") + "/spam-filter-bayes-tmp";
+    private static final String SYSTEM_TEMP_PATH = System.getProperty("java.io.tmpdir");
+    private static final String TEMP_DIR_NAME = "spam-filter-bayes-tmp";
+    private static String tempDir;
 
     private FileUtils() {
         // utility classes do not have public constructor
+    }
+
+    public static String getTempPath() {
+        if (tempDir == null) {
+            tempDir = SYSTEM_TEMP_PATH;
+            if (!tempDir.endsWith("/") && !tempDir.endsWith("\\")) {
+                tempDir += "/";
+            }
+            tempDir += TEMP_DIR_NAME;
+        }
+        return tempDir;
     }
 
     public static String getFileContent(File file) {
@@ -58,7 +71,7 @@ public class FileUtils {
 
 
     public static boolean deleteTempDir() {
-        File tempDir = new File(TEMP_PATH);
+        File tempDir = new File(getTempPath());
         return deleteNonEmptyDirectory(tempDir);
     }
 

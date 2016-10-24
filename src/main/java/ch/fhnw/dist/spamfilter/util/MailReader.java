@@ -23,14 +23,18 @@ public class MailReader {
     // filenames
     private static final String HAM_ANLERN_FILENAME = "ham-anlern.zip";
     private static final String SPAM_ANLERN_FILENAME = "spam-anlern.zip";
-    private static final String HAM_TEST_FILENAME = "spam-test.zip";
-    private static final String SPAM_TEST_FILENAME = "ham-test.zip";
-    private static final String SPAM_CALIBRATE_FILENAME = "spam-kallibrierung.zip";
+    private static final String HAM_TEST_FILENAME = "ham-test.zip";
+    private static final String SPAM_TEST_FILENAME = "spam-test.zip";
     private static final String HAM_CALIBRATE_FILENAME = "ham-kallibrierung.zip";
+    private static final String SPAM_CALIBRATE_FILENAME = "spam-kallibrierung.zip";
 
     public void readMails() {
         // delete temp dir for clean environment
         FileUtils.deleteTempDir();
+
+        // create empty temp dir
+        File tempDir = new File(FileUtils.getTempPath());
+        tempDir.mkdir();
 
         learnMails = new ArrayList<>();
         testMails = new ArrayList<>();
@@ -41,7 +45,7 @@ public class MailReader {
         List<Mail> hamAnlernMails = readMailsFromZip(hamAnlernFile, false);
         learnMails.addAll(hamAnlernMails);
 
-        // delete temp dir to prevent realoding ham mails
+        // delete temp dir to prevent reloading ham mails
         FileUtils.deleteTempDir();
 
         // spam anlern mails
@@ -49,17 +53,29 @@ public class MailReader {
         List<Mail> spamAnlernMails = readMailsFromZip(spamAnlernFile, true);
         learnMails.addAll(spamAnlernMails);
 
+        // delete temp dir to prevent reloading ham mails
+        FileUtils.deleteTempDir();
+
         // ham test
         ZipFile hamTestFile = FileUtils.getZipFileFromResources(HAM_TEST_FILENAME);
         testMails.addAll(readMailsFromZip(hamTestFile, false));
+
+        // delete temp dir to prevent reloading ham mails
+        FileUtils.deleteTempDir();
 
         // spam test
         ZipFile spamTestFile = FileUtils.getZipFileFromResources(SPAM_TEST_FILENAME);
         testMails.addAll(readMailsFromZip(spamTestFile, true));
 
+        // delete temp dir to prevent reloading ham mails
+        FileUtils.deleteTempDir();
+
         // ham calibrate
         ZipFile hamCalibrateFile = FileUtils.getZipFileFromResources(HAM_CALIBRATE_FILENAME);
         calibrateMails.addAll(readMailsFromZip(hamCalibrateFile, false));
+
+        // delete temp dir to prevent reloading ham mails
+        FileUtils.deleteTempDir();
 
         // spam calibrate
         ZipFile spamCalibrateFile = FileUtils.getZipFileFromResources(SPAM_CALIBRATE_FILENAME);
@@ -73,7 +89,7 @@ public class MailReader {
     }
 
     private List<Mail> readMailsFromZip(ZipFile zipFile, boolean isSpam) {
-        String tempDirPath = FileUtils.TEMP_PATH;
+        String tempDirPath = FileUtils.getTempPath();
         try {
             zipFile.extractAll(tempDirPath);
             File tempDir = new File(tempDirPath);

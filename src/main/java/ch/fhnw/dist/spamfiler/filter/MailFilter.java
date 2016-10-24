@@ -1,11 +1,10 @@
 package ch.fhnw.dist.spamfiler.filter;
 
-import ch.fhnw.dist.spamfilter.Main;
 import ch.fhnw.dist.spamfilter.model.Mail;
 import ch.fhnw.dist.spamfilter.util.MailAnalyser;
 import ch.fhnw.dist.spamfilter.util.MailStatistic;
 
-import java.util.*;
+import java.util.HashMap;
 
 
 /**
@@ -93,7 +92,7 @@ public class MailFilter {
                 Float[] counts = statistic.getWordMap().get(word);
 
                 // sum of spam & ham eq significantly value
-                float sum = counts[0] - counts[0];
+                float sum = counts[0] - counts[1];
                 sum = sum < 0 ? sum * -1 : sum;
 
                 if(mostSignificantWords.size() < 10) {
