@@ -5,7 +5,6 @@ import net.lingala.zip4j.exception.ZipException;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -55,14 +54,7 @@ public class FileUtils {
     }
 
     public static File getFileFromResources(String fileName) {
-        ClassLoader classLoader = FileUtils.class.getClassLoader();
-        URL resource = classLoader.getResource(fileName);
-        if (resource != null) {
-            // replace %20 back to whitespace
-            String pathname = resource.getFile().replace("%20", " ");
-            return new File(pathname);
-        }
-        return null;
+        return new File(fileName);
     }
 
     public static boolean fileExists(File file) {
